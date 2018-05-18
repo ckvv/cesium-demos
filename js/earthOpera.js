@@ -33,10 +33,10 @@ function earthInit(){
 	//初始化 CesiumToolbar
 	CesiumToolbar.init();
 
-	// var homeview=window.setTimeout(function(){
-	// 	MapStatic.flyTo({lon:113.544,lat:34.832,height:3000});
-	// 	clearTimeout(homeview);
-	// },3000);
+	 var homeview=window.setTimeout(function(){
+	 	MapStatic.flyTo({lon:113.544,lat:34.832,height:3000});
+	 	clearTimeout(homeview);
+	 },3000);
 	$('.loadingIndicator').css('display','none');
 
 	if(Login.IsLogin()){
