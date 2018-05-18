@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="utf-8">
+	<title>毕业设计登录</title>
+	<!-- Tell IE to use the latest, best version. -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<!-- 使移动应用程序占用全屏浏览器并禁用用户缩放. -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+	<!-- 禁止缓存 -->
+	<meta http-equiv="pragma" content="no-cache"> 
+	<meta http-equiv="Cache-Control" content="no-cache, must-revalidate"> 
+	<meta http-equiv="expires" content="Wed, 26 Feb 1997 08:21:57 GMT">
+	<link rel="shortcut icon" href="earth.ico" type="image/x-icon" />
+	<!--bootstrap-->
+	<link rel="stylesheet" href="libs/bootstrap/css/bootstrap.css">
+	<!--初始化界面样式-->
+	<link rel="stylesheet" href="css/login.css" />
+</head>
+<body>
+
+	<h1 class="main_title">时空数据可视化</h1>
+	<div class="container">  
+		<div class="row myCenter">  
+			<div class="col-xs-6 col-md-4 col-center-block">  
+				<form class="form-signin" action="#" target="nm_iframe">  
+					<h2 class="form-signin-heading">请登录</h2>  
+					<label for="inputUsername" class="sr-only">用户名</label>  
+					<input type="text" id="inputUsername" name="username" class="form-control" placeholder="用户名" required autofocus>
+					<br/>  
+					<label for="inputPassword" class="sr-only">密码</label>  
+					<input type="password" id="inputPassword"  name="password" class="form-control" placeholder="密码" required>  
+					<div class="checkbox">  
+					<label>  
+						<input type="checkbox" value="remember-me">  
+						记住我 </label>  
+					</div>  
+
+					<button class="btn btn-primary btn-block userLogin" type="button">登录</button>  
+					<button class="btn btn-primary btn-block userRegister" type="button">注册</button>
+				</form>  
+			</div>  
+		</div>  
+	</div> 
+	<iframe id="id_iframe" name="nm_iframe" style="display:none;"></iframe>
+</body>
+	<script src="libs/jquery/jquery.js"></script>
+	<script src="libs/jquery/jqueryform.js"></script>
+	<!--bootstrap-->
+	<script src="libs/bootstrap/js/bootstrap.js"></script>
+	<script src="js/config.js"></script>
+	<script src="js/utils/utils.js"></script>
+	<script src="js/fun/Login.js"></script>
+	
+</html>
