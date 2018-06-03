@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="utf-8">
+	<title>毕业设计</title>
+	<!-- Tell IE to use the latest, best version. -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<!-- 使移动应用程序占用全屏浏览器并禁用用户缩放. -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+	
+	<!-- 禁止缓存 -->
+	<meta http-equiv="pragma" content="no-cache"> 
+	<meta http-equiv="Cache-Control" content="no-cache, must-revalidate"> 
+	<meta http-equiv="expires" content="Wed, 26 Feb 1997 08:21:57 GMT">
+	<link rel="shortcut icon" href="earth.ico" type="image/x-icon" />
+	<!--Cesium Viewer小部件-->
+	<link rel="stylesheet" href="libs/Cesium/Widgets/widgets.css" />
+	<!--easyui-->
+	<!-- <link rel="stylesheet" type="text/css" href="libs/easyui/themes/bootstrap/easyui.css">
+	<link rel="stylesheet" type="text/css" href="libs/easyui/themes/icon.css"> -->
+	<!--bootstrap-->
+	<link rel="stylesheet" href="libs/bootstrap/css/bootstrap.css">
+	<link rel="stylesheet" href="libs/jqueryui/jquery-ui.css">
+	<!--初始化界面样式-->
+	<link rel="stylesheet" href="css/index.css" />
+	<!--工具条-->
+	<link rel="stylesheet" href="css/toobar.css" />
+</head>
+<body onload="earthInit()" onselectstart="return false;" ondragstart="return false;">
+	<nav class="navbar navbar-default" style="z-index: 2000;">
+		<div class="container-fluid">
+		  <!-- Brand and toggle get grouped for better mobile display -->
+		  <div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+			  <span class="sr-only">Toggle navigation</span>
+			  <span class="icon-bar"></span>
+			  <span class="icon-bar"></span>
+			  <span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="#">
+					<img alt="LOGO" src="img/page/nav/logo.png" style="width: 50px;height: 32px;display: inline-block;padding-bottom: 12px">
+				时空数据可视化分析</a>
+		  </div>
+		  <!-- Collect the nav links, forms, and other content for toggling -->
+		  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav navbar-right">
+							<!--专题信息-->
+							<li class="dropdown">
+								<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+									<img src="img/page/nav/nav-thematicmap.png"/>
+									专题地图 <span class="caret"></span>
+								</a>
+								<ul class="dropdown-menu">
+									<li id="population-map"><a href="#">人口分布</a></li>
+									<li id="gdp-map"><a href="#">GDP地图</a></li>
+									<!-- <li id="spreadModel"><a href="#">扩散模型</a></li> -->
+									<li id="zztaxi_map"><a href="#">车辆拥堵可视化</a></li>
+								</ul>
+							</li>
+							<!--三维场景-->
+							<li class="dropdown">
+								<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+									<img src="img/page/nav/nav-data.png"/>
+									三维场景 <span class="caret"></span>
+								</a>
+								<ul class="dropdown-menu">
+									<li id="newYorkData"><a href="#">纽约</a></li>
+									<li id="photography"><a href="#">倾斜摄影</a></li>
+									<li id="pointcloud"><a href="#">点云</a></li>
+								</ul>
+							</li>
+							<!--时空数据-->
+							<li class="dropdown">
+								<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+									<img src="img/page/nav/nav-track.png"/>
+									时空数据<span class="caret"></span>
+								</a>
+								<ul class="dropdown-menu">
+									<li id="satellite-track"><a href="#">卫星轨迹</a></li>
+									<li id="satelliteFacilities-track"><a href="#">地面站</a></li>
+									<li id="route-track"><a href="#">行车路线</a></li>
+									<li id="czml-track"><a href="#">行车记录</a></li>
+								</ul>
+							</li>
+							<!--功能管理-->
+							<li class="dropdown">
+								<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+									<img src="img/page/nav/nav-funmanage.png"/>
+									功能管理<span class="caret"></span>
+								</a>
+								<ul class="dropdown-menu">
+									<li id="uerEntity_fun"><a href="#">我的标签</a></li>
+									<li id="loadData_fun"><a href="#">数据加载</a></li>
+									<li id="saveMap"><a href="#">保存地图</a></li>
+									<li id="userReLogin"><a href="login.html">返回登录</a></li>
+								</ul>
+							</li>
+							<!--显示设置-->
+							<li>
+								<a href="#" id="displaySettingA">
+									<img src="img/page/nav/nav-setting.png"/>
+									<span>显示设置</span>
+								</a>
+							</li>
+						</ul>
+		  </div><!-- /.navbar-collapse -->
+		</div><!-- /.container-fluid -->
+	</nav>
+		<!--地图容器-->
+	<div id="cesiumContainer"></div>
+	<!--工具条-->
+	<!-- <div class="toolbar-container" style="position: fixed; top: 30%;left: 60%;display: none;">
+		<ul class="toolbar move">
+			<li>
+				<img src="img/toolbar/指南针.png" title="正方向" id="northViewBar" style="transform: rotate(-45deg);"/>				
+			</li>
+		</ul>
+	</div> -->
+	<!--弹框-->
+	<!--显示设置-->
+	<div id="displaySettingWin" class="functionWin">
+		<div class="head move">
+			<span class="title">
+				显示设置
+			</span>
+			<span class="close headfun_win">
+				<img src="img/page/fun/close.png" title="关闭"/>
+			</span>
+			<span class="toggle_win headfun_win open">
+				<img src="img/page/fun/arrow_top.png"/>
+			</span>
+		</div>
+		<div class="content">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-xs-2">
+						<input type="checkbox" value="toolbar" checked/>
+					</div>
+					<div class="col-xs-4">工具条</div>
+
+					<div class="col-xs-2">
+						<input type="checkbox" value="mapShadows"/>
+					</div>
+					<div class="col-xs-4">地图阴影</div>
+				</div>
+			</div>
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-xs-2">
+						<input type="checkbox" value="mousePosition"/>
+					</div>
+					<div class="col-xs-4">鼠标位置</div>
+					<div class="col-xs-2">
+						<input type="checkbox" value="compass" checked/>
+					</div>
+					<div class="col-xs-4">罗盘</div>
+				</div>
+			</div>
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-xs-2">
+						<input type="checkbox" value="navigation-controls" checked/>
+					</div>
+					<div class="col-xs-4">导航控件</div>
+					<div class="col-xs-2">
+						<input type="checkbox" value="distance-legend" checked/>
+					</div>
+					<div class="col-xs-4">比例尺</div>
+				</div>
+			</div>
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-xs-2">
+						<input type="checkbox" value="time-controls" checked/>
+					</div>
+					<div class="col-xs-4">时间轴</div>
+					<div class="col-xs-2">
+						<input type="checkbox" value="fullscreen-controls" checked/>
+					</div>
+					<div class="col-xs-4">全屏显示</div>
+				</div>
+			</div>
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-xs-2">
+						<input type="checkbox" value="VRButton" checked/>
+					</div>
+					<div class="col-xs-4">开启VR</div>
+					<div class="col-xs-2">
+						<input type="checkbox" value="waterMap"/>
+					</div>
+					<div class="col-xs-4">水体效果</div>
+				</div>
+			</div>
+			<!-- <div class="container-fluid">
+				<div class="row">
+					<div class="col-xs-4">
+						<input type="checkbox" value="keyboard"/>
+					</div>
+					<div class="col-xs-8">键盘移动</div>
+				</div>
+			</div> -->
+		</div>
+	</div>
+	<!--纽约-->
+	<div id="newYorkWin" class="functionWin">
+		<div class="head move">
+			<span class="title">
+				纽约建筑
+			</span>
+			<span class="close headfun_win" id="closeNewYork">
+				<img src="img/page/fun/close.png"/>
+			</span>
+			<span class="toggle_win headfun_win">
+				<img src="img/page/fun/arrow_top.png"/>
+			</span>
+		</div>
+		<div class="content">
+			<div class="container-fluid">
+				<!-- <div class="row">
+					<div class="col-xs-4">点击查询:</div>
+					<div class="col-xs-8">
+							<input type="checkbox" value="NY-PointQuery"/>
+					</div>
+				</div> -->
+				<div class="row">
+					<div class="col-xs-4">点击查询</div>
+					<div class="col-xs-2">
+						<input type="checkbox" value="NY-PointQuery"/>
+					</div>
+					<div class="col-xs-4">统计图表</div>
+					<div class="col-xs-2">
+						<input type="checkbox" value="statistic-chart"/>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-4">渲染方式:</div>
+					<div class="col-xs-8">
+						<select class="rendering-style form-control">
+							<option value ="none" selected>无</option>
+							<option value ="area">面积</option>
+							<option value ="height">高度</option>
+						</select>
+					</div>
+				</div>
+				<hr/>
+				<!-- <div class="row">
+					<div class="col-xs-4 font-center" style="font-weight: 600">
+						显示筛选
+					</div>
+				</div> -->
+				<!-- <div class="row">
+					<div class="col-xs-4">面积大于:</div>
+					<div class="col-xs-8">
+						<input type="text" name="area-nyhide" class="form-control" placeholder="面积"/>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-4">高度大于:</div>
+					<div class="col-xs-8">
+						<input type="text" name="height-nyhide" class="form-control" placeholder="高度"/>
+					</div>
+				</div> -->
+				<div class="row">
+					<div class="col-xs-4">面积大于:</div>
+					<div class="col-xs-8">
+						<div class="value">0平方米</div>
+						<div class="slider" data-max="10000" data-danwei="平方米" data-event="newyork.hideByArea">
+							<div class="custom-handle" class="ui-slider-handle"></div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-4">高度大于:</div>
+					<div class="col-xs-8">
+						<div class="value">0米</div>
+						<div class="slider" data-max="600"  data-danwei="米" data-event="newyork.hideByHeight">
+							<div class="custom-handle" class="ui-slider-handle"></div>
+						</div>
+					</div>
+				</div>
+			</div>	
+		</div>
+	</div>
+	<!-- 卫星 -->
+	<div id="satelliteWin" class="functionWin">
+		<div class="head move">
+			<span class="title">
+				卫星
+			</span>	
+			<span class="close headfun_win">
+				<img src="img/page/fun/close.png"/>
+			</span>
+			<span class="toggle_win headfun_win" id="closeNewYork">
+				<img src="img/page/fun/arrow_top.png"/>
+			</span>
+		</div>
+
+		<div class="content">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-xs-8">
+						<input type="text" class="queryEntitiesByID" class="form-control" placeholder="要查询名称ID"/>
+					</div>
+					<div class="col-xs-4">
+						<input type="button" class="fixed_btn" value="查询"/>
+					</div>
+				</div>
+				<hr/>
+				<div class="row">
+					<div class="col-xs-4">统计</div>
+					<div class="col-xs-2">
+						<input type="checkbox" value="statistic-chart"/>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 数据加载 -->
+	<div id="loadDataWin" class="functionWin">
+		<div class="head move">
+			<span class="title">
+				数据加载
+			</span>	
+			<span class="close headfun_win">
+				<img src="img/page/fun/close.png"/>
+			</span>
+			<span class="toggle_win headfun_win" id="closeNewYork">
+				<img src="img/page/fun/arrow_top.png"/>
+			</span>
+		</div>
+		<div class="content">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-xs-4">数据类型:</div>
+					<div class="col-xs-8">
+						<select class="loadDataType_select form-control">
+							<option value="CZML">CZML</option>
+							<option value="Tileset">Tileset</option>
+							<option value="KML">KML</option>
+							<option value="GeoJson">GeoJson</option>
+							<option value="Gltf">Gltf</option>
+						</select>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-4">数据地址:</div>
+					<div class="col-xs-8">
+						<input type="text" class="loadDataUrl_text" class="form-control" placeholder="数据地址url"/>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-6">
+					</div>
+					<div class="col-xs-3">
+						<input type="button" class="cansole_btn" value="取消"/>
+					</div>
+					<div class="col-xs-3">
+						<input type="button" class="sure_btn" value="加载"/>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- 添加 用户Entity -->
+	<div id="userEntityWin" class="functionWin">
+		<div class="head move">
+			<span class="title">
+				我的标签
+			</span>	
+			<span class="close headfun_win">
+				<img src="img/page/fun/close.png"/>
+			</span>
+			<span class="toggle_win headfun_win" id="">
+				<img src="img/page/fun/arrow_top.png"/>
+			</span>
+		</div>
+		<div class="content">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-xs-8">
+						<input id="queryEntityName_text" type="text" class="form-control" id="entityname" placeholder="标签名称">
+					</div>
+					<div class="col-xs-4">
+						<input id="queryEntity_btn" class="btn btn-sm" type="button" value="搜索">
+					</div>
+				</div>
+				<hr/>
+				<div class="row">
+					<div class="col-xs-4">
+						<label>操作：</label>
+					</div>
+					<div class="col-xs-4">
+						<input id="addentity_btn" class="btn btn-sm" type="button" value="添加">
+					</div>
+					<div class="col-xs-4">
+						<input id="delentity_btn" class="btn btn-sm" type="button" value="删除">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 郑州拥堵 -->
+	<div id="zzHeatMapWin" class="functionWin">
+		<div class="head move">
+			<span class="title">
+				拥堵分析
+			</span>	
+			<span class="close headfun_win">
+				<img src="img/page/fun/close.png"/>
+			</span>
+			<span class="toggle_win headfun_win" id="closeNewYork">
+				<img src="img/page/fun/arrow_top.png"/>
+			</span>
+		</div>
+		<div class="content">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-xs-8">
+						<input id="zzHeatMapTime_text" type="text" class="form-control" id="entityname" placeholder="2016-11-15 13:50">
+					</div>
+					<div class="col-xs-4">
+						<input id="sure_btn" class="btn btn-sm" type="button" value="查看">
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="value">2016-11-15 15:00</div>
+						<div class="slider" data-max="60" data-event="newyork.hideByHeight">
+							<div class="custom-handle" class="ui-slider-handle"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- entity内容 -->
+	<div id="entity_modal" class="modal fade" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+		  <div class="modal-content">
+			<div class="modal-header" style="background-color: white;color: black;font-weight: bolder;">
+			  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			  <h4 class="modal-title">添加标签信息</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-12">
+						<input id="entityname_text" type="text" class="form-control" id="entityName_modal" placeholder="标签名字">
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<textarea id="entitydescription_text" class="form-control" rows="4" placeholder="标签内容" style="resize:none"></textarea>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+			  <button type="button" class="btn btn-default cansole_btn" data-dismiss="modal">取消</button>
+			  <button type="button" class="btn btn-primary certain_btn">添加</button>
+			</div>
+		  </div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+	<!-- 鼠标位置 -->
+	<div class="mousePosition_div" style="position: fixed;bottom: 5%;right: 15%;color: red;display: none"></div>
+	<!-- 统计图表 -->
+	<div class="charst_content" style="position: fixed;display: block;top: 20%;right: 6%;">
+	</div>
+	<!--加载界面中-->
+	<div id="loadingIndicator" class="loadingIndicator"></div>
+	  
+</body>
+	<script src="libs/jquery/jquery.js"></script>
+	<!-- easyui -->
+	<!-- <script type="text/javascript" src="libs/easyui/jquery.easyui.min.js"></script> -->
+	<!--cesium-->
+	<script src="libs/Cesium/Cesium.js"></script>
+	<!--cesium导航插件-->
+	<script src="libs/CesiumExtend/viewerCesiumNavigationMixin.min.js"></script>
+	<script src="libs/CesiumExtend/CesiumHeatmap.js"></script>
+	
+	<script src="libs/Cesium/other/Sandcastle-header.js"></script>
+	<!-- Echares -->
+	<script src="libs/echarts/echarts.js"></script>
+	<!--ui插件-->
+	<script src="libs/bootstrap/js/bootstrap.js"></script>
+	<script src="libs/jqueryui/jquery-ui.js"></script>
+
+	<!-- 配置文件 -->
+	<script src="js/config.js"></script>
+	<!--工具条-->
+	<script src="js/utils/toorbar.js"></script>
+	<script src="js/utils/utils.js"></script>
+	<!--地球操作有关函数-->
+	<script src="js/map/MapStatic.js"></script>
+	<script src="js/earthOpera.js"></script>
+	<!--功能函数-->
+	<script src="js/fun/WebGLGlobeDataSource.js"></script>
+	<script src="js/fun/newyork.js"></script>
+	<script src="js/fun/satellite.js"></script>
+	<script src="js/fun/kmlData.js"></script>
+	<script src="js/fun/CesiumToolbar.js"></script>
+	<script src="js/fun/Mychart.js"></script>
+	<script src="js/map/OtherData.js"></script>
+	<script src="js/map/CameraM.js"></script>
+	<script src="js/map/HandlerEvent.js"></script>
+	<script src="js/map/EntityM.js"></script>
+
+	<script src="js/map/HeatMap.js"></script>
+	<!--事件初始化-->
+	<script src="js/eventBindInit.js"></script>
+	<!--鼠标移动-->
+	<!-- <script src="js/fun/mouseMove.js"></script> -->
+	<script src="js/map/Tileset.js"></script>
+	<script src="js/map/Czml.js"></script>
+	<script src="js/map/GeoJson.js"></script>
+	<script src="js/map/KML.js"></script>
+	<script src="js/map/Gltf.js"></script>
+	<script src="js/map/SpreadModel.js"></script>
+</html>
