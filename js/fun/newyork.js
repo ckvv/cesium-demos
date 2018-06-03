@@ -18,7 +18,8 @@ NewYork.prototype = {
 		
 		// Load the NYC buildings tileset
 		this.tileset = viewer.scene.primitives.add(new Cesium.Cesium3DTileset({
-			url: 'data/TilesData/NewYork/tileset.json',
+			//url: 'data/TilesData/NewYork/tileset.json',
+			url: 'https://beta.cesium.com/api/assets/1461?access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJkYWJmM2MzNS02OWM5LTQ3OWItYjEyYS0xZmNlODM5ZDNkMTYiLCJpZCI6NDQsImFzc2V0cyI6WzE0NjFdLCJpYXQiOjE0OTkyNjQ3NDN9.vuR75SqPDKcggvUrG_vpx0Av02jdiAxnnB1fNf-9f7s',
 			//url: 'data/TilesData/1.json'
 			skipLevelOfDetail : true,
 			baseScreenSpaceError : 1024,
