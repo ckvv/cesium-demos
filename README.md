@@ -5,7 +5,6 @@
 
 ### 效果
 #### http://www.chenkaiblog.top/CesiumExample/index.html
-#### http://www.chenkaiblog.top/CesiumExample/indexrt.html
 
 ### 其他
 3dTiles数据太大我放在了百度网盘里面，有需要的自己可以下载。
