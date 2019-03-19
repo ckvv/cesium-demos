@@ -1,7 +1,7 @@
 # GPCesium
 
 ### 简介
-毕业设计作品，边学白做的，可以供初学者cesium学习使用。
+毕业设计作品，边学边做的，可以供初学者cesium学习使用。
 
 ### 效果
 #### http://chenkai.gz01.bdysite.com/CesiumExample/     或
