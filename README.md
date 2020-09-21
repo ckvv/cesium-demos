@@ -3,6 +3,20 @@
 ### 简介
 毕业设计作品，边学边做的，可以供初学者cesium学习使用。
 
+### 启动项目
+
+安装依赖包
+
+```shell
+npm install 
+```
+
+开启`http-server`
+
+```shell
+npm  start 
+```
+
 ### 效果
 [https://chenkai0520.github.io/CesiumExample/](https://chenkai0520.github.io/CesiumExample/)
 

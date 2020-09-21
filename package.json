@@ -1,0 +1,26 @@
+{
+  "name": "cesiumexample",
+  "version": "1.0.0",
+  "description": "cesiumexample",
+  "main": "index.js",
+  "scripts": {
+    "start": "http-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chenkai0520/CesiumExample.git"
+  },
+  "keywords": [
+    "cesium",
+    "demo"
+  ],
+  "author": "chenkai0520",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chenkai0520/CesiumExample/issues"
+  },
+  "homepage": "https://github.com/chenkai0520/CesiumExample#readme",
+  "dependencies": {
+    "http-server": "^0.12.3"
+  }
+}
