@@ -1,7 +1,7 @@
 {
-  "name": "cesiumexample",
+  "name": "cesium-demos",
   "version": "1.0.0",
-  "description": "cesiumexample",
+  "description": "cesium-demos",
   "main": "index.js",
   "scripts": {
     "start": "http-server"
