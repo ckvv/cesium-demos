@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/chenkai0520/CesiumExample.git"
+    "url": "git+https://github.com/ckvv/cesium-demos.git"
   },
   "keywords": [
     "cesium",
@@ -17,9 +17,9 @@
   "author": "chenkai0520",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/chenkai0520/CesiumExample/issues"
+    "url": "https://github.com/ckvv/cesium-demos/issues"
   },
-  "homepage": "https://github.com/chenkai0520/CesiumExample#readme",
+  "homepage": "https://github.com/ckvv/cesium-demo#readme",
   "dependencies": {
     "http-server": "^0.12.3"
   }
